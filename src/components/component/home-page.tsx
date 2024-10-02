@@ -1,7 +1,7 @@
-
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Card, CardHeader, CardContent } from "@/components/ui/card"
+import Link from "next/link";
+import * as React from "react";
+import { Button } from "../ui/button";
+import { Card, CardContent, CardHeader } from "../ui/card";
 
 export function HomePage() {
   return (
@@ -34,89 +34,35 @@ export function HomePage() {
       </header>
       <main className="flex-1 container py-8 px-4 md:px-6 grid md:grid-cols-[3fr_1fr] gap-8">
         <div className="space-y-8">
-        <Link href={"/movie?name=Tushar+Jamdade&time=10:30&date=12/12/2024"}> 
-          <Card className="flex flex-col md:flex-row gap-4">
-            <img
-              src="/placeholder.svg"
-              width={400}
-              height={300}
-              alt="Blog Post"
-              className="rounded-lg  object-cover"
-              style={{ aspectRatio: "400/300", objectFit: "cover" }}
-            />
-            <div className="flex-1 space-y-2">
-              <div className="text-sm text-muted-foreground">
-                By{" "}
-                <Link href="#" className="font-medium hover:underline" prefetch={false}>
-                  John Doe
-                </Link>{" "}
-                on <time dateTime="2023-04-15">April 15, 2023</time>
+          <Link href={"/movie?name=Tushar+Jamdade&time=10:30&date=12/12/2024"}>
+            <Card className="flex flex-col md:flex-row gap-4">
+              <img
+                src="/placeholder.svg"
+                width={400}
+                height={300}
+                alt="Blog Post"
+                className="rounded-lg  object-cover"
+                style={{ aspectRatio: "400/300", objectFit: "cover" }}
+              />
+              <div className="flex-1 space-y-2">
+                <div className="text-sm text-muted-foreground">
+                  By{" "}
+                  <Link href="#" className="font-medium hover:underline" prefetch={false}>
+                    John Doe
+                  </Link>{" "}
+                  on <time dateTime="2023-04-15">April 15, 2023</time>
+                </div>
+                <h2 className="text-2xl font-bold">
+                  <Link href="#" className="hover:underline" prefetch={false}>
+                    The Future of Web Development
+                  </Link>
+                </h2>
+                <p className="text-muted-foreground">
+                  Explore the latest trends and technologies shaping the future of web development.
+                </p>
               </div>
-              <h2 className="text-2xl font-bold">
-                <Link href="#" className="hover:underline" prefetch={false}>
-                  The Future of Web Development
-                </Link>
-              </h2>
-              <p className="text-muted-foreground">
-                Explore the latest trends and technologies shaping the future of web development.
-              </p>
-            </div>
-          </Card>
+            </Card>
           </Link>
-          {/* <Card className="flex flex-col md:flex-row gap-4">
-            <img
-              src="/placeholder.svg"
-              width={400}
-              height={300}
-              alt="Blog Post"
-              className="rounded-lg md:w-[40%] object-cover"
-              style={{ aspectRatio: "400/300", objectFit: "cover" }}
-            />
-            <div className="flex-1 space-y-2">
-              <div className="text-sm text-muted-foreground">
-                By{" "}
-                <Link href="#" className="font-medium hover:underline" prefetch={false}>
-                  Jane Smith
-                </Link>{" "}
-                on <time dateTime="2023-04-10">April 10, 2023</time>
-              </div>
-              <h2 className="text-2xl font-bold">
-                <Link href="#" className="hover:underline" prefetch={false}>
-                  Mastering React Hooks
-                </Link>
-              </h2>
-              <p className="text-muted-foreground">
-                Dive into the power of React Hooks and learn how to use them effectively in your projects.
-              </p>
-            </div>
-          </Card>
-          <Card className="flex flex-col md:flex-row gap-4">
-            <img
-              src="/placeholder.svg"
-              width={400}
-              height={300}
-              alt="Blog Post"
-              className="rounded-lg md:w-[40%] object-cover"
-              style={{ aspectRatio: "400/300", objectFit: "cover" }}
-            />
-            <div className="flex-1 space-y-2">
-              <div className="text-sm text-muted-foreground">
-                By{" "}
-                <Link href="#" className="font-medium hover:underline" prefetch={false}>
-                  Michael Johnson
-                </Link>{" "}
-                on <time dateTime="2023-04-05">April 5, 2023</time>
-              </div>
-              <h2 className="text-2xl font-bold">
-                <Link href="#" className="hover:underline" prefetch={false}>
-                  Optimizing Website Performance
-                </Link>
-              </h2>
-              <p className="text-muted-foreground">
-                Learn proven techniques to improve the speed and performance of your website.
-              </p>
-            </div>
-          </Card> */}
         </div>
         <div className="space-y-8">
           <Card>
@@ -153,75 +99,6 @@ export function HomePage() {
               </ul>
             </CardContent>
           </Card>
-          <Card>
-            <CardHeader>
-              <h3 className="text-lg font-semibold">Recent Posts</h3>
-            </CardHeader>
-            <CardContent>
-              <ul className="space-y-4">
-                <li>
-                  <Link
-                    href="#"
-                    className="flex items-center gap-2 text-sm font-medium hover:underline"
-                    prefetch={false}
-                  >
-                    <img
-                      src="/placeholder.svg"
-                      width={60}
-                      height={60}
-                      alt="Blog Post"
-                      className="rounded-lg"
-                      style={{ aspectRatio: "60/60", objectFit: "cover" }}
-                    />
-                    <div>
-                      <div>Mastering React Hooks</div>
-                      <div className="text-xs text-muted-foreground">April 10, 2023</div>
-                    </div>
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="#"
-                    className="flex items-center gap-2 text-sm font-medium hover:underline"
-                    prefetch={false}
-                  >
-                    <img
-                      src="/placeholder.svg"
-                      width={60}
-                      height={60}
-                      alt="Blog Post"
-                      className="rounded-lg"
-                      style={{ aspectRatio: "60/60", objectFit: "cover" }}
-                    />
-                    <div>
-                      <div>Optimizing Website Performance</div>
-                      <div className="text-xs text-muted-foreground">April 5, 2023</div>
-                    </div>
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="#"
-                    className="flex items-center gap-2 text-sm font-medium hover:underline"
-                    prefetch={false}
-                  >
-                    <img
-                      src="/placeholder.svg"
-                      width={60}
-                      height={60}
-                      alt="Blog Post"
-                      className="rounded-lg"
-                      style={{ aspectRatio: "60/60", objectFit: "cover" }}
-                    />
-                    <div>
-                      <div>The Future of Web Development</div>
-                      <div className="text-xs text-muted-foreground">April 15, 2023</div>
-                    </div>
-                  </Link>
-                </li>
-              </ul>
-            </CardContent>
-          </Card>
         </div>
       </main>
       <footer className="bg-muted border-t">
@@ -241,10 +118,11 @@ export function HomePage() {
         </div>
       </footer>
     </div>
-  )
+  );
 }
 
-function MenuIcon(props) {
+// Define props type for MenuIcon and MountainIcon using React.SVGProps
+function MenuIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
@@ -262,11 +140,10 @@ function MenuIcon(props) {
       <line x1="4" x2="20" y1="6" y2="6" />
       <line x1="4" x2="20" y1="18" y2="18" />
     </svg>
-  )
+  );
 }
 
-
-function MountainIcon(props) {
+function MountainIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
@@ -282,5 +159,5 @@ function MountainIcon(props) {
     >
       <path d="m8 3 4 8 5-5 5 15H2L8 3z" />
     </svg>
-  )
+  );
 }

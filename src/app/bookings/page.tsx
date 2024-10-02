@@ -1,9 +1,8 @@
 "use client"
 import React from 'react'
-import { useSearchParams } from 'next/navigation'
 import SeatDetailsPayment   from "../../components/seat-details-payment";
 const page = () => {
-  const searchParams = useSearchParams()
+  // const searchParams = useSearchParams()
   return (
     <div>
       {/* <SeatDetailsPayment/> */}
