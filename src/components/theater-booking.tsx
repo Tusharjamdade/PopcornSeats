@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react'
 import { Button } from "@/components/ui/button"
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 
 interface Seat {
   id: number
@@ -35,11 +35,16 @@ export default function TheaterBooking() {
 
   const selectedSeats = seats.filter(seat => seat.isSelected)
   const selectedSeatsCount = selectedSeats.length
+  const param = useSearchParams()
+  const movieName = param.get("name");
+  const movieTime = param.get("time");
+  const movieDate = param.get("date");
 
   return (
     <div className="min-h-screen bg-[#1a1a1a] text-white py-8 px-4">
       <div className="max-w-4xl mx-auto">
         <h1 className="text-3xl font-bold mb-8 text-center text-[#ffd700]">Grand Theater</h1>
+        <h1 className="text-3xl font-bold mb-8 text-center text-[#ffd700]">Name:{movieName} Time:{movieTime} Date:{movieDate}</h1>
 
         <div className="relative mb-8">
           <div className="absolute top-0 left-0 w-1/2 h-4 bg-[#8B0000] rounded-br-full"></div>

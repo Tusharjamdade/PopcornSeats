@@ -34,13 +34,14 @@ export function HomePage() {
       </header>
       <main className="flex-1 container py-8 px-4 md:px-6 grid md:grid-cols-[3fr_1fr] gap-8">
         <div className="space-y-8">
+        <Link href={"/movie?name=Tushar+Jamdade&time=10:30&date=12/12/2024"}> 
           <Card className="flex flex-col md:flex-row gap-4">
             <img
               src="/placeholder.svg"
               width={400}
               height={300}
               alt="Blog Post"
-              className="rounded-lg md:w-[40%] object-cover"
+              className="rounded-lg  object-cover"
               style={{ aspectRatio: "400/300", objectFit: "cover" }}
             />
             <div className="flex-1 space-y-2">
@@ -61,7 +62,8 @@ export function HomePage() {
               </p>
             </div>
           </Card>
-          <Card className="flex flex-col md:flex-row gap-4">
+          </Link>
+          {/* <Card className="flex flex-col md:flex-row gap-4">
             <img
               src="/placeholder.svg"
               width={400}
@@ -114,7 +116,7 @@ export function HomePage() {
                 Learn proven techniques to improve the speed and performance of your website.
               </p>
             </div>
-          </Card>
+          </Card> */}
         </div>
         <div className="space-y-8">
           <Card>

@@ -8,7 +8,7 @@ export default function Home() {
     <div>
       <ModeToggle/>
       <HomePage/>
-      <TheaterBooking/>
+      {/* <TheaterBooking/> */}
       
       {/* <SeatDetailsPayment/> */}
     </div>
