@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { Suspense, useState } from 'react'
 import { Button } from "@/components/ui/button"
 import { useRouter, useSearchParams } from 'next/navigation'
 
@@ -41,6 +41,7 @@ export default function TheaterBooking() {
   const movieDate = param.get("date");
 
   return (
+    <Suspense>
     <div className="min-h-screen bg-[#1a1a1a] text-white py-8 px-4">
       <div className="max-w-4xl mx-auto">
         <h1 className="text-3xl font-bold mb-8 text-center text-[#ffd700]">Grand Theater</h1>
@@ -107,5 +108,6 @@ export default function TheaterBooking() {
         </div>
       </div>
     </div>
+    </Suspense>
   )
 }

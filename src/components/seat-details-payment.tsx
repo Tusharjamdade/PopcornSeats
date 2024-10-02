@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { Suspense, useEffect, useState } from 'react'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -74,6 +74,7 @@ export default function SeatDetailsPayment() {
 
   if (!parsedSelectedSeats || parsedSelectedSeats.length === 0) {
     return (
+      
       <div className="min-h-screen bg-[#1a1a1a] text-white py-8 px-4">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-3xl font-bold mb-8 text-center text-[#ffd700]">No seats selected</h1>
@@ -83,6 +84,7 @@ export default function SeatDetailsPayment() {
   }
 
   return (
+    <Suspense>
     <div className="min-h-screen bg-[#1a1a1a] text-white py-8 px-4">
       <div className="max-w-4xl mx-auto">
         <h1 className="text-3xl font-bold mb-8 text-center text-[#ffd700]">Seat Details & Payment</h1>
@@ -154,5 +156,6 @@ export default function SeatDetailsPayment() {
         </form>
       </div>
     </div>
+    </Suspense>
   )
 }
