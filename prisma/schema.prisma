@@ -13,3 +13,22 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Movie{
+  id    Int @id @default(autoincrement())
+  title String  
+  director String  
+  time String  
+  date String  
+  description String 
+  image Bytes 
+  seats Int[]
+}
+
+model User{
+   id    Int @id @default(autoincrement())
+   name String
+   email String
+   gender String
+   phone String
+}
+
