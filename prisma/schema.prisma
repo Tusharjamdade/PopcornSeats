@@ -20,8 +20,15 @@ model Movie{
   time String  
   date String  
   description String 
-  image Bytes 
+  image Bytes?
   seats Int[]
+}
+model UserDetails{
+  id Int @id @default(autoincrement())
+  name String
+  phone Int
+  gender String
+  age Int
 }
 
 model User{
