@@ -1,20 +1,22 @@
-'use client'
-
-import React, { Suspense, useState } from 'react'
-import { Button } from "@/components/ui/button"
-import { useRouter, useSearchParams } from 'next/navigation'
+"use client";
+import React, { Suspense, useState, useEffect } from 'react';
+import { Button } from "@/components/ui/button";
+import { useRouter, useSearchParams } from 'next/navigation';
+import axios from 'axios';
 
 interface Seat {
-  id: number
-  row: string
-  number: number
-  isSelected: boolean
+  id: number;
+  row: string;
+  number: number;
+  isSelected: boolean;
+  isBooked: boolean;
+  seatname?: string; // Optional if you want to use it later
 }
 
 function Demo() {
-  const router = useRouter()
-  const rows = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
-  const seatsPerRow = 10
+  const router = useRouter();
+  const rows = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+  const seatsPerRow = 10;
 
   const [seats, setSeats] = useState<Seat[]>(() =>
     rows.flatMap((row, rowIndex) =>
@@ -23,30 +25,56 @@ function Demo() {
         row,
         number: seatIndex + 1,
         isSelected: false,
+        isBooked: false,
+        seatname: `${row}${seatIndex + 1}`, // Generate seatname like A1, A2, etc.
       }))
     )
-  )
+  );
+
+  const param = useSearchParams();
+  const movieid = param.get("movieid");
+  const [bookedSeats, setBookedSeats] = useState<any[]>([]); // Changed to any for flexibility
+
+  useEffect(() => {
+    const fetchBookedSeats = async () => {
+      if (!movieid) return; // Ensure movieid is present
+      try {
+        const response = await axios.post(`http://localhost:3000/api/seats`, { movieid }); // Include movieId in the API call
+        const bookedSeatsData = response.data.seats; // Assuming it returns an array of booked seat objects
+        setBookedSeats(bookedSeatsData);
+
+        // Update the seats state to reflect booked status
+        const updatedSeats = seats.map(seat => ({
+          ...seat,
+          isBooked: bookedSeatsData.some(bookedSeat => bookedSeat.seatname === seat.seatname), // Compare seatname
+        }));
+        setSeats(updatedSeats);
+      } catch (error) {
+        console.error('Error fetching booked seats:', error);
+      }
+    };
+
+    fetchBookedSeats();
+  }, [movieid]); // Removed `seats` from dependencies
 
   const toggleSeat = (id: number) => {
     setSeats(seats.map(seat =>
       seat.id === id ? { ...seat, isSelected: !seat.isSelected } : seat
-    ))
-  }
+    ));
+  };
 
-  const selectedSeats = seats.filter(seat => seat.isSelected)
-  const selectedSeatsCount = selectedSeats.length
-  const param = useSearchParams()
-  
+  const selectedSeats = seats.filter(seat => seat.isSelected);
+  const selectedSeatsCount = selectedSeats.length;
+
   const movieName = param.get("name");
   const movieTime = param.get("time");
   const movieDate = param.get("date");
 
   return (
-    
     <div className="min-h-screen bg-[#1a1a1a] text-white py-8 px-4">
       <div className="max-w-4xl mx-auto">
         <h1 className="text-3xl font-bold mb-8 text-center text-[#ffd700]">Grand Theater</h1>
-        <h1 className="text-3xl font-bold mb-8 text-center text-[#ffd700]">Name:{movieName} Time:{movieTime} Date:{movieDate}</h1>
+        <h1 className="text-3xl font-bold mb-8 text-center text-[#ffd700]">Name: {movieName} Time: {movieTime} Date: {movieDate}</h1>
 
         <div className="relative mb-8">
           <div className="absolute top-0 left-0 w-1/2 h-4 bg-[#8B0000] rounded-br-full"></div>
@@ -66,14 +94,17 @@ function Demo() {
               {seats.slice(rowIndex * seatsPerRow, (rowIndex + 1) * seatsPerRow).map(seat => (
                 <button
                   key={seat.id}
-                  onClick={() => toggleSeat(seat.id)}
+                  onClick={() => !seat.isBooked && toggleSeat(seat.id)} // Only toggle if not booked
                   className={`w-8 h-8 mx-1 rounded-t-lg text-xs font-medium transition-colors ${
-                    seat.isSelected
-                      ? 'bg-[#ffd700] text-black'
-                      : 'bg-[#4a4a4a] text-white hover:bg-[#5a5a5a]'
+                    seat.isBooked
+                      ? 'bg-red-600 text-white cursor-not-allowed'
+                      : seat.isSelected
+                        ? 'bg-[#ffd700] text-black'
+                        : 'bg-[#4a4a4a] text-white hover:bg-[#5a5a5a]'
                   }`}
-                  aria-label={`${seat.row}${seat.number} ${seat.isSelected ? 'Selected' : 'Not selected'}`}
+                  aria-label={`${seat.row}${seat.number} ${seat.isBooked ? 'Booked' : (seat.isSelected ? 'Selected' : 'Not selected')}`}
                   aria-pressed={seat.isSelected}
+                  disabled={seat.isBooked} // Disable booked seats
                 >
                   {seat.number}
                 </button>
@@ -92,6 +123,10 @@ function Demo() {
             <div className="w-4 h-4 bg-[#ffd700] rounded-sm mr-2"></div>
             <span className="text-sm">Selected</span>
           </div>
+          <div className="flex items-center">
+            <div className="w-4 h-4 bg-red-600 rounded-sm mr-2"></div>
+            <span className="text-sm">Booked</span>
+          </div>
         </div>
 
         <div className="text-center">
@@ -101,7 +136,7 @@ function Demo() {
             disabled={selectedSeatsCount === 0}
             className="bg-[#ffd700] text-black hover:bg-[#ffed4a] disabled:bg-gray-500 disabled:text-gray-300"
             onClick={() => {
-              router.push(`/bookings?seats=${encodeURIComponent(JSON.stringify(selectedSeats))}`)
+              router.push(`/bookings?movieid=${movieid}&&seats=${encodeURIComponent(JSON.stringify(selectedSeats))}`);
             }}
           >
             Proceed with {selectedSeatsCount} {selectedSeatsCount === 1 ? 'seat' : 'seats'}
@@ -109,13 +144,13 @@ function Demo() {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default function TheaterBooking(){
+export default function TheaterBooking() {
   return (
     <Suspense fallback={<></>}>
-      <Demo/>
+      <Demo />
     </Suspense>
   );
 }

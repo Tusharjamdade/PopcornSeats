@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useSearchParams } from 'next/navigation'
+import axios from 'axios'
 
 interface Seat {
   id: number
@@ -21,33 +22,27 @@ interface SeatDetails {
 }
 
 const PRICE_PER_SEAT = 15 // Price in dollars
- function Demo() {
+
+function Demo() {
   const searchParams = useSearchParams();
+  const movieId = searchParams.get("movieid");
+  const selectedSeatsParam = searchParams.get('seats') ?? '[]';
+  let parsedSelectedSeats: Seat[] = [];
 
-// ... rest of your code
-
-
-
-  // Parse selected seats from the query parameter
-  const selectedSeatsParam = searchParams.get('seats') ?? '[]'
-  let parsedSelectedSeats: Seat[] = []
-
-  // Try to safely parse selected seats
+  // Safely parse selected seats from query parameter
   try {
-    parsedSelectedSeats = JSON.parse(decodeURIComponent(selectedSeatsParam)) || []
+    parsedSelectedSeats = JSON.parse(decodeURIComponent(selectedSeatsParam)) || [];
   } catch (error) {
-    console.error('Error parsing selected seats:', error)
-    parsedSelectedSeats = []
+    console.error('Error parsing selected seats:', error);
+    parsedSelectedSeats = [];
   }
 
-  const [seatDetails, setSeatDetails] = useState<SeatDetails[]>(
-    parsedSelectedSeats.map(() => ({
-      name: '',
-      age: '',
-      gender: '',
-      contactNumber: '',
-    }))
-  )
+  const [seatDetails, setSeatDetails] = useState<SeatDetails[]>(parsedSelectedSeats.map(() => ({
+    name: '',
+    age: '',
+    gender: '',
+    contactNumber: '',
+  })));
 
   useEffect(() => {
     if (parsedSelectedSeats.length > 0 && seatDetails.length === 0) {
@@ -56,24 +51,43 @@ const PRICE_PER_SEAT = 15 // Price in dollars
         age: '',
         gender: '',
         contactNumber: '',
-      })))
+      })));
     }
-  }, [parsedSelectedSeats, seatDetails.length])
+  }, [parsedSelectedSeats, seatDetails.length]);
 
   const handleInputChange = (index: number, field: keyof SeatDetails, value: string) => {
-    const newSeatDetails = [...seatDetails]
-    newSeatDetails[index] = { ...newSeatDetails[index], [field]: value }
-    setSeatDetails(newSeatDetails)
+    const newSeatDetails = [...seatDetails];
+    newSeatDetails[index] = { ...newSeatDetails[index], [field]: value };
+    setSeatDetails(newSeatDetails);
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    console.log('Submitted seat details:', seatDetails)
-    console.log('Selected seats:', parsedSelectedSeats)
-    // Proceed to payment processing
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    // Prepare the bookings data for POST request
+    const bookings = parsedSelectedSeats.map((seat, index) => ({
+      movieId: movieId || '',
+      seatId: seat.id,
+      // row: seat.row, // Add seat row
+      seatname : seat.row +seat.number,
+      // number: seat.number, // Add seat number
+      name: seatDetails[index].name,
+      age: seatDetails[index].age,
+      gender: seatDetails[index].gender,
+      contactNumber: seatDetails[index].contactNumber,
+    }));
+
+    try {
+      const response = await axios.post('http://localhost:3000/api/booking', bookings);
+      console.log('Booking response:', response.data);
+      // Optionally redirect the user or show a success message
+    } catch (error) {
+      console.error('Error during booking:', error);
+      // Optionally show an error message to the user
+    }
   }
 
-  const totalAmount = parsedSelectedSeats.length * PRICE_PER_SEAT
+  const totalAmount = parsedSelectedSeats.length * PRICE_PER_SEAT;
 
   if (!parsedSelectedSeats || parsedSelectedSeats.length === 0) {
     return (
@@ -82,11 +96,10 @@ const PRICE_PER_SEAT = 15 // Price in dollars
           <h1 className="text-3xl font-bold mb-8 text-center text-[#ffd700]">No seats selected</h1>
         </div>
       </div>
-    )
+    );
   }
 
   return (
-    
     <div className="min-h-screen bg-[#1a1a1a] text-white py-8 px-4">
       <div className="max-w-4xl mx-auto">
         <h1 className="text-3xl font-bold mb-8 text-center text-[#ffd700]">Seat Details & Payment</h1>
@@ -160,10 +173,11 @@ const PRICE_PER_SEAT = 15 // Price in dollars
     </div>
   )
 }
-export default function SeatDetailsPayment(){
+
+export default function SeatDetailsPayment() {
   return (
     <Suspense fallback={<></>}>
-      <Demo/>
+      <Demo />
     </Suspense>
   );
 }

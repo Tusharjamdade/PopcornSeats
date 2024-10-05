@@ -22,7 +22,17 @@ model Movie{
   description String 
   image Bytes?
   type String @default("Sci-fi")
-  seats Int[]
+  seats Seat[]
+}
+model Seat{
+  id    Int @id @default(autoincrement())
+  seatname String
+  name String
+  mobile String
+  age String
+  gender String
+  Movie   Movie @relation(fields: [MoveId], references: [id])
+  MoveId Int
 }
 model UserDetails{
   id Int @id @default(autoincrement())

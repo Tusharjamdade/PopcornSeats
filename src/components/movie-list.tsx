@@ -6,6 +6,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export function MovieListComponent() {
   const [movies, setMovies] = useState([]);
@@ -27,12 +28,12 @@ export function MovieListComponent() {
   }, []);
 
   const categories = useMemo(() => {
-    return ['All', ...new Set(movies.map(movie => movie.category || "Unknown"))];
+    return ['All', ...new Set(movies.map(movie => movie.type || "Unknown"))];
   }, [movies]);
 
   const filteredMovies = useMemo(() => {
     return movies.filter(movie => 
-      (filter === 'All' || movie.category === filter) &&
+      (filter === 'All' || movie.type === filter) &&
       movie.title.toLowerCase().includes(searchQuery.toLowerCase())
     );
   }, [filter, searchQuery, movies]);
@@ -79,6 +80,7 @@ export function MovieListComponent() {
 
           <div className="space-y-6">
             {filteredMovies.map(movie => (
+              <Link href={`http://localhost:3000/movie?movieid=${movie.id}&&name=${movie.title}&&time=${movie.time}&&date=${movie.date}`}>
               <Card key={movie.id}>
                 <CardContent className="p-4">
                   <div className="flex flex-col sm:flex-row">
@@ -104,6 +106,7 @@ export function MovieListComponent() {
                   </div>
                 </CardContent>
               </Card>
+              </Link>
             ))}
           </div>
         </div>
