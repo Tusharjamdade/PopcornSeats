@@ -21,6 +21,7 @@ model Movie{
   date String  
   description String 
   image Bytes?
+  type String @default("Sci-fi")
   seats Int[]
 }
 model UserDetails{

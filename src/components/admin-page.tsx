@@ -42,23 +42,26 @@ export function AdminPageComponent() {
   const [showTime, setShowTime] = useState("")
   const [showDate, setShowDate] = useState("")
   const [image, setImage] = useState<File | null>(null)
+  const [dropdownOpen, setDropdownOpen] = useState(false)
+  const [selectedType, setSelectedType] = useState("Sci-fi") // Default value for type
+
+  const movieTypes = ["Hollywood", "Bollywood", "Sci-fi", "Action", "Comedy", "Drama"]
 
   const handleAddMovie = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    // Create form data to include the image
     const formData = new FormData()
     formData.append("title", movieName)
     formData.append("directorName", directorName)
     formData.append("description", description)
     formData.append("showTime", showTime)
     formData.append("showDate", showDate)
+    formData.append("type", selectedType) // Include selected movie type
     if (image) {
       formData.append("image", image)
     }
 
     try {
-      // Make the POST request to the API
       const response = await axios.post("http://localhost:3000/api/movies", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -66,16 +69,25 @@ export function AdminPageComponent() {
       })
       console.log("Movie added successfully:", response.data)
 
-      // Reset form fields
       setMovieName("")
       setDirectorName("")
       setDescription("")
       setShowTime("")
       setShowDate("")
       setImage(null)
+      setSelectedType("Sci-fi") // Reset dropdown to default value
     } catch (error) {
       console.error("Error adding movie:", error)
     }
+  }
+
+  const toggleDropdown = () => {
+    setDropdownOpen(!dropdownOpen)
+  }
+
+  const handleSelectType = (type: string) => {
+    setSelectedType(type)
+    setDropdownOpen(false) // Close the dropdown after selecting
   }
 
   return (
@@ -156,6 +168,39 @@ export function AdminPageComponent() {
                       required
                     />
                   </div>
+
+                  {/* Movie Type Dropdown */}
+                  <div className="relative">
+                    <button
+                      onClick={toggleDropdown}
+                      id="dropdownDefaultButton"
+                      className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center w-full"
+                      type="button"
+                    >
+                      {selectedType} {/* Display selected movie type */}
+                      <svg className="w-2.5 h-2.5 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 1l4 4 4-4"/>
+                      </svg>
+                    </button>
+                    {dropdownOpen && (
+                      <div id="dropdown" className="z-10 absolute w-full bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700">
+                        <ul className="py-2 text-sm text-gray-700 dark:text-gray-200">
+                          {movieTypes.map((type) => (
+                            <li key={type}>
+                              <button
+                                type="button"
+                                onClick={() => handleSelectType(type)}
+                                className="block w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                              >
+                                {type}
+                              </button>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+
                   <div className="space-y-2">
                     <Label htmlFor="dropzone-file">Upload Image</Label>
                     <div className="flex items-center justify-center w-full">
@@ -165,111 +210,92 @@ export function AdminPageComponent() {
                       >
                         <div className="flex flex-col items-center justify-center pt-5 pb-6">
                           <svg
-                            className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400"
                             aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg"
+                            className="w-10 h-10 mb-3 text-gray-400"
                             fill="none"
-                            viewBox="0 0 20 16"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg"
                           >
                             <path
-                              stroke="currentColor"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                              stroke-width="2"
-                              d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
-                            />
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="2"
+                              d="M7 16a4 4 0 0 1 8 0M5 8h14M12 12v4"
+                            ></path>
                           </svg>
                           <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
                             <span className="font-semibold">Click to upload</span> or drag and drop
                           </p>
-                          <p className="text-xs text-gray-500 dark:text-gray-400">
-                            SVG, PNG, JPG, or GIF (MAX. 800x400px)
-                          </p>
+                          <p className="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG, or GIF</p>
                         </div>
                         <input
                           id="dropzone-file"
                           type="file"
                           className="hidden"
-                          onChange={(e) => setImage(e.target.files ? e.target.files[0] : null)}
+                          onChange={(e) => setImage(e.target.files?.[0] ?? null)}
                         />
                       </label>
                     </div>
                   </div>
-                  <Button type="submit" className="w-full">
-                    Add Movie
-                  </Button>
+
+                  <Button type="submit">Add Movie</Button>
                 </form>
               </CardContent>
             </Card>
           </TabsContent>
 
           <TabsContent value="user-details">
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-2xl font-bold text-blue-600">User Details</CardTitle>
-                <CardDescription>List of users registered in the system.</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>ID</TableHead>
-                      <TableHead>Name</TableHead>
-                      <TableHead>Email</TableHead>
-                      <TableHead>Contact</TableHead>
-                      <TableHead>Gender</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {users.map((user) => (
-                      <TableRow key={user.id}>
-                        <TableCell>{user.id}</TableCell>
-                        <TableCell>{user.name}</TableCell>
-                        <TableCell>{user.email}</TableCell>
-                        <TableCell>{user.contact}</TableCell>
-                        <TableCell>{user.gender}</TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </CardContent>
-            </Card>
+            {/* User details table */}
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Name</TableHead>
+                  <TableHead>Email</TableHead>
+                  <TableHead>Contact</TableHead>
+                  <TableHead>Gender</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {users.map((user) => (
+                  <TableRow key={user.id}>
+                    <TableCell>{user.name}</TableCell>
+                    <TableCell>{user.email}</TableCell>
+                    <TableCell>{user.contact}</TableCell>
+                    <TableCell>{user.gender}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
           </TabsContent>
 
           <TabsContent value="bookings">
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-2xl font-bold text-blue-600">Bookings</CardTitle>
-                <CardDescription>List of all movie bookings.</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>ID</TableHead>
-                      <TableHead>Movie Name</TableHead>
-                      <TableHead>Show Time</TableHead>
-                      <TableHead>Show Date</TableHead>
-                      <TableHead>Tickets Booked</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {bookings.map((booking) => (
-                      <TableRow key={booking.id}>
-                        <TableCell>{booking.id}</TableCell>
-                        <TableCell>{booking.movieName}</TableCell>
-                        <TableCell>{booking.showTime}</TableCell>
-                        <TableCell>{booking.showDate}</TableCell>
-                        <TableCell>{booking.ticketsBooked}</TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </CardContent>
-            </Card>
+            {/* Bookings table */}
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Movie Name</TableHead>
+                  <TableHead>Show Time</TableHead>
+                  <TableHead>Show Date</TableHead>
+                  <TableHead>Tickets Booked</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {bookings.map((booking) => (
+                  <TableRow key={booking.id}>
+                    <TableCell>{booking.movieName}</TableCell>
+                    <TableCell>{booking.showTime}</TableCell>
+                    <TableCell>{booking.showDate}</TableCell>
+                    <TableCell>{booking.ticketsBooked}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
           </TabsContent>
         </Tabs>
       </div>
     </div>
   )
 }
+
+export default AdminPageComponent
