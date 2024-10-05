@@ -38,4 +38,3 @@ model User{
    gender String
    phone String
 }
-

@@ -4,7 +4,7 @@ import {MovieListComponent} from "../components/movie-list"
 export default function Home() {
   return (
     <div>
-      <ModeToggle/>
+      {/* <ModeToggle/> */}
       {/* <HomePage/> */}
       <MovieListComponent/>
       {/* <TheaterBooking/> */}
