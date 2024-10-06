@@ -34,18 +34,11 @@ model Seat{
   Movie   Movie @relation(fields: [MoveId], references: [id])
   MoveId Int
 }
-model UserDetails{
-  id Int @id @default(autoincrement())
-  name String
-  phone Int
-  gender String
-  age Int
-}
+
 
 model User{
    id    Int @id @default(autoincrement())
-   name String
-   email String
-   gender String
-   phone String
+  email String
+  password String
+  role String @default("user")
 }

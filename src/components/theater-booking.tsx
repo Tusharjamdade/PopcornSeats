@@ -124,7 +124,7 @@ function Demo() {
             <span className="text-sm">Selected</span>
           </div>
           <div className="flex items-center">
-            <div className="w-4 h-4 bg-red-600 rounded-sm mr-2"></div>
+            <div className="w-4 h-4 bg-[#a81414] rounded-sm mr-2"></div>
             <span className="text-sm">Booked</span>
           </div>
         </div>

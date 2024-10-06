@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import axios from 'axios';
 import { ModeToggle } from './component/ModeToggle';
+import { useSession } from 'next-auth/react';
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -24,6 +25,7 @@ export default function Navbar() {
     }
     setIsChecked(!isChecked);
   };
+  const { data: session, status } = useSession()
 
 //   const handleDownload =  () => {
 //     try {
@@ -101,9 +103,14 @@ export default function Navbar() {
             <li>
               <Link href="/#skills" onClick={() => { setMobileMenuOpen(!mobileMenuOpen) }} className="block py-2 px-3 md:p-0 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Skills</Link>
             </li>
+            {session?.user.role == "admin"?(
             <li>
-              <Link href="/admin" onClick={() => { setMobileMenuOpen(!mobileMenuOpen) }} className="block py-2 px-3 md:p-0 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Admin</Link>
+            <Link href="/admin" onClick={() => { setMobileMenuOpen(!mobileMenuOpen) }} className="block py-2 px-3 md:p-0 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Admin</Link>
             </li>
+            ):(
+              <></>
+            )}
+           
           </ul>
         </div>
       </div>
