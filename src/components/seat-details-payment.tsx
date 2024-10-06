@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import axios from 'axios'
 
 interface Seat {
@@ -24,6 +24,7 @@ interface SeatDetails {
 const PRICE_PER_SEAT = 15 // Price in dollars
 
 function Demo() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const movieId = searchParams.get("movieid");
   const selectedSeatsParam = searchParams.get('seats') ?? '[]';
@@ -68,9 +69,7 @@ function Demo() {
     const bookings = parsedSelectedSeats.map((seat, index) => ({
       movieId: movieId || '',
       seatId: seat.id,
-      // row: seat.row, // Add seat row
-      seatname : seat.row +seat.number,
-      // number: seat.number, // Add seat number
+      seatname: seat.row + seat.number,
       name: seatDetails[index].name,
       age: seatDetails[index].age,
       gender: seatDetails[index].gender,
@@ -80,10 +79,10 @@ function Demo() {
     try {
       const response = await axios.post('http://localhost:3000/api/booking', bookings);
       console.log('Booking response:', response.data);
-      // Optionally redirect the user or show a success message
+      // Redirect to homepage with success message
+      router.push(`/`);
     } catch (error) {
       console.error('Error during booking:', error);
-      // Optionally show an error message to the user
     }
   }
 
@@ -100,13 +99,13 @@ function Demo() {
   }
 
   return (
-    <div className="min-h-screen bg-[#1a1a1a] text-white py-8 px-4">
+    <div className="min-h-screen text-white py-8 px-4">
       <div className="max-w-4xl mx-auto">
         <h1 className="text-3xl font-bold mb-8 text-center text-[#ffd700]">Seat Details & Payment</h1>
         
         <form onSubmit={handleSubmit} className="space-y-8">
           {parsedSelectedSeats.map((seat, index) => (
-            <div key={seat.id} className="bg-[#2a2a2a] p-6 rounded-lg shadow-lg">
+            <div key={seat.id} className="p-6 rounded-lg shadow-lg">
               <h2 className="text-xl font-semibold mb-4 text-[#ffd700]">
                 Seat {seat.row}{seat.number}
               </h2>
@@ -118,7 +117,7 @@ function Demo() {
                     value={seatDetails[index]?.name || ''}
                     onChange={(e) => handleInputChange(index, 'name', e.target.value)}
                     required
-                    className="bg-[#3a3a3a] border-[#4a4a4a] text-white"
+                    className=" border-[#4a4a4a] text-white"
                   />
                 </div>
                 <div className="space-y-2">
@@ -129,7 +128,7 @@ function Demo() {
                     value={seatDetails[index]?.age || ''}
                     onChange={(e) => handleInputChange(index, 'age', e.target.value)}
                     required
-                    className="bg-[#3a3a3a] border-[#4a4a4a] text-white"
+                    className=" border-[#4a4a4a] text-white"
                   />
                 </div>
                 <div className="space-y-2">
@@ -138,7 +137,7 @@ function Demo() {
                     value={seatDetails[index]?.gender || ''}
                     onValueChange={(value) => handleInputChange(index, 'gender', value)}
                   >
-                    <SelectTrigger className="bg-[#3a3a3a] border-[#4a4a4a] text-white">
+                    <SelectTrigger className=" border-[#4a4a4a] text-white">
                       <SelectValue placeholder="Select gender" />
                     </SelectTrigger>
                     <SelectContent>
@@ -155,14 +154,14 @@ function Demo() {
                     value={seatDetails[index]?.contactNumber || ''}
                     onChange={(e) => handleInputChange(index, 'contactNumber', e.target.value)}
                     required
-                    className="bg-[#3a3a3a] border-[#4a4a4a] text-white"
+                    className=" border-[#4a4a4a] text-white"
                   />
                 </div>
               </div>
             </div>
           ))}
 
-          <div className="bg-[#2a2a2a] p-6 rounded-lg shadow-lg text-center">
+          <div className=" p-6 rounded-lg shadow-lg text-center">
             <h2 className="text-2xl font-semibold text-[#ffd700] mb-4">Total Amount: ${totalAmount}</h2>
             <Button type="submit" className="bg-[#ffd700] text-black hover:bg-[#ffed4a]">
               Proceed to Payment

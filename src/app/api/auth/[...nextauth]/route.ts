@@ -2,7 +2,7 @@ import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { prisma } from "../../../../../client";
 
-const ADMIN_CODE = "786123"; // You can move this to environment variables in production
+const ADMIN_CODE = "786123"; // Move this to environment variables in production
 
 const handler = NextAuth({
   providers: [
@@ -14,30 +14,32 @@ const handler = NextAuth({
         userType: { label: "User Type", type: "text", placeholder: "User or Admin" },
         adminCode: { label: "Admin Code", type: "text", placeholder: "Admin Code", optional: true }, // optional for non-admins
       },
-      async authorize(credentials: any) {
-        // Fetch the user from the database
+      async authorize(credentials) {
+        if (!credentials) {
+          return null;
+        }
+
         const user = await prisma.user.findFirst({
           where: { email: credentials.email },
         });
 
         if (!user) {
-          // Return null if no user was found (invalid credentials)
           return null;
         }
 
-        // Check if the role is "admin" and the correct admin code is provided
+        // Check if admin role is requested and admin code is correct
         if (credentials.userType === "admin" && credentials.adminCode !== ADMIN_CODE) {
-          return null; // Return null if admin code is invalid
+          return null;
         }
 
-        // Validate password (in production, hash and compare passwords)
+        // Validate the password (replace with hash comparison in production)
         if (user.password !== credentials.password) {
-          return null; // Return null if password is incorrect
+          return null;
         }
 
-        // Return user object (without password) if everything checks out
+        // Return user data with id as a string
         return {
-          id: user.id,
+          id: user.id.toString(), // Convert id to string to match NextAuth type expectations
           email: user.email,
           role: user.role,
         };
@@ -45,25 +47,30 @@ const handler = NextAuth({
     }),
   ],
   pages: {
-    signIn: "/auth/signin", // Custom sign-in page
+    signIn: "/signin", // Custom sign-in page
   },
   session: {
-    strategy: "jwt", // Use JWT to store the session
+    strategy: "jwt",
+    maxAge: 30 * 24 * 60 * 60, // 30 days
+    updateAge: 24 * 60 * 60, // Session updated every 24 hours
+  },
+  jwt: {
+    maxAge: 30 * 24 * 60 * 60, // Match JWT maxAge with session maxAge (30 days)
   },
   callbacks: {
     async jwt({ token, user }) {
-      // Add user data (role, email) to the token
       if (user) {
-        token.role = user.role;
-        token.email = user.email;
+        // Explicitly typecast user to handle the 'role' field
+        const customUser = user as { id: string; email: string; role: string };
+        token.role = customUser.role;
+        token.email = customUser.email;
       }
       return token;
     },
     async session({ session, token }) {
-      // Add email and role to the session object for access control in the frontend
-      if (token) {
+      if (token && session.user) {
         session.user.email = token.email;
-        session.user.role = token.role;
+        session.user.role = token.role; // No error now
       }
       return session;
     },

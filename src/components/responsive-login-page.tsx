@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
-export function ResponsiveLoginPage() {
+export default function SignInPage() {
   const [userType, setUserType] = useState("user");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -86,7 +86,7 @@ export function ResponsiveLoginPage() {
                     id="adminCode"
                     type="text"
                     placeholder="Enter admin code"
-                    required
+                    required={userType === "admin"}
                     value={adminCode}
                     onChange={(e) => setAdminCode(e.target.value)}
                   />
@@ -103,7 +103,7 @@ export function ResponsiveLoginPage() {
         <div className="bg-white bg-opacity-80 p-8 rounded-lg shadow-lg max-w-lg">
           <h2 className="text-3xl font-bold mb-4 text-gray-800">Welcome Back!</h2>
           <p className="text-xl text-gray-700">
-            "The future belongs to those who believe in the beauty of their dreams."
+          &quot;The future belongs to those who believe in the beauty of their dreams.&quot;
           </p>
           <p className="text-lg mt-2 text-gray-600">- Eleanor Roosevelt</p>
         </div>

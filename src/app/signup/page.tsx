@@ -113,7 +113,7 @@ export default function SignUp() {
         <div className="bg-white bg-opacity-80 p-8 rounded-lg shadow-lg max-w-lg">
           <h2 className="text-3xl font-bold mb-4 text-gray-800">Welcome Back!</h2>
           <p className="text-xl text-gray-700">
-            "The future belongs to those who believe in the beauty of their dreams."
+          &quot;The future belongs to those who believe in the beauty of their dreams.&quot;
           </p>
           <p className="text-lg mt-2 text-gray-600">- Eleanor Roosevelt</p>
         </div>

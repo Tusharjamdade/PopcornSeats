@@ -1,10 +1,13 @@
 "use client"
-import { HomePage } from "@/components/component/home-page";
-import {ModeToggle} from "../components/component/ModeToggle"
 import {MovieListComponent} from "../components/movie-list"
 import { useSession } from "next-auth/react"
+import { useRouter } from "next/navigation";
 export default function Home() {
-  const { data: session, status } = useSession()
+  const router = useRouter()
+  const {  status } = useSession()
+  if(status == "unauthenticated"){
+    router.push("/app")
+  }
   return (
     <div>
       {/* <ModeToggle/> */}

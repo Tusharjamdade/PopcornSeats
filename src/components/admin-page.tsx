@@ -221,81 +221,97 @@ export function AdminPageComponent() {
                               strokeLinecap="round"
                               strokeLinejoin="round"
                               strokeWidth="2"
-                              d="M7 16a4 4 0 0 1 8 0M5 8h14M12 12v4"
-                            ></path>
+                              d="M7 16V4a2 2 0 012-2h6a2 2 0 012 2v12M7 16l-2 2m2-2h10m0 0l2 2M9 20h6"
+                            />
                           </svg>
                           <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
                             <span className="font-semibold">Click to upload</span> or drag and drop
                           </p>
-                          <p className="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG, or GIF</p>
+                          <p className="text-xs text-gray-500 dark:text-gray-400">
+                            PNG, JPG (MAX. 800x400px)
+                          </p>
                         </div>
                         <input
                           id="dropzone-file"
                           type="file"
                           className="hidden"
-                          onChange={(e) => setImage(e.target.files?.[0] ?? null)}
+                          onChange={(e) =>
+                            setImage(e.target.files ? e.target.files[0] : null)
+                          }
                         />
                       </label>
                     </div>
                   </div>
 
-                  <Button type="submit">Add Movie</Button>
+                  <Button type="submit" className="w-full">
+                    Add Movie
+                  </Button>
                 </form>
               </CardContent>
             </Card>
           </TabsContent>
 
           <TabsContent value="user-details">
-            {/* User details table */}
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Email</TableHead>
-                  <TableHead>Contact</TableHead>
-                  <TableHead>Gender</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {users.map((user) => (
-                  <TableRow key={user.id}>
-                    <TableCell>{user.name}</TableCell>
-                    <TableCell>{user.email}</TableCell>
-                    <TableCell>{user.contact}</TableCell>
-                    <TableCell>{user.gender}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-2xl font-bold text-blue-600">User Details</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Name</TableHead>
+                      <TableHead>Email</TableHead>
+                      <TableHead>Contact</TableHead>
+                      <TableHead>Gender</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {users.map((user) => (
+                      <TableRow key={user.id}>
+                        <TableCell>{user.name}</TableCell>
+                        <TableCell>{user.email}</TableCell>
+                        <TableCell>{user.contact}</TableCell>
+                        <TableCell>{user.gender}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </CardContent>
+            </Card>
           </TabsContent>
 
           <TabsContent value="bookings">
-            {/* Bookings table */}
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Movie Name</TableHead>
-                  <TableHead>Show Time</TableHead>
-                  <TableHead>Show Date</TableHead>
-                  <TableHead>Tickets Booked</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {bookings.map((booking) => (
-                  <TableRow key={booking.id}>
-                    <TableCell>{booking.movieName}</TableCell>
-                    <TableCell>{booking.showTime}</TableCell>
-                    <TableCell>{booking.showDate}</TableCell>
-                    <TableCell>{booking.ticketsBooked}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-2xl font-bold text-blue-600">Booking Details</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Movie Name</TableHead>
+                      <TableHead>Show Time</TableHead>
+                      <TableHead>Show Date</TableHead>
+                      <TableHead>Tickets Booked</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {bookings.map((booking) => (
+                      <TableRow key={booking.id}>
+                        <TableCell>{booking.movieName}</TableCell>
+                        <TableCell>{booking.showTime}</TableCell>
+                        <TableCell>{booking.showDate}</TableCell>
+                        <TableCell>{booking.ticketsBooked}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </CardContent>
+            </Card>
           </TabsContent>
         </Tabs>
       </div>
     </div>
   )
 }
-
-export default AdminPageComponent

@@ -10,7 +10,11 @@ interface Seat {
   number: number;
   isSelected: boolean;
   isBooked: boolean;
-  seatname?: string; // Optional if you want to use it later
+  seatname?: string;
+}
+
+interface BookedSeat {
+  seatname: string;
 }
 
 function Demo() {
@@ -33,15 +37,13 @@ function Demo() {
 
   const param = useSearchParams();
   const movieid = param.get("movieid");
-  const [bookedSeats, setBookedSeats] = useState<any[]>([]); // Changed to any for flexibility
 
   useEffect(() => {
     const fetchBookedSeats = async () => {
       if (!movieid) return; // Ensure movieid is present
       try {
-        const response = await axios.post(`http://localhost:3000/api/seats`, { movieid }); // Include movieId in the API call
-        const bookedSeatsData = response.data.seats; // Assuming it returns an array of booked seat objects
-        setBookedSeats(bookedSeatsData);
+        const response = await axios.post<{ seats: BookedSeat[] }>(`http://localhost:3000/api/seats`, { movieid });
+        const bookedSeatsData = response.data.seats; 
 
         // Update the seats state to reflect booked status
         const updatedSeats = seats.map(seat => ({
@@ -55,7 +57,7 @@ function Demo() {
     };
 
     fetchBookedSeats();
-  }, [movieid]); // Removed `seats` from dependencies
+  }, [movieid]); // Only rerun when movieid changes
 
   const toggleSeat = (id: number) => {
     setSeats(seats.map(seat =>
@@ -71,10 +73,10 @@ function Demo() {
   const movieDate = param.get("date");
 
   return (
-    <div className="min-h-screen bg-[#1a1a1a] text-white py-8 px-4">
+    <div className="min-h-screen  text-white py-8 px-4">
       <div className="max-w-4xl mx-auto">
         <h1 className="text-3xl font-bold mb-8 text-center text-[#ffd700]">Grand Theater</h1>
-        <h1 className="text-3xl font-bold mb-8 text-center text-[#ffd700]">Name: {movieName} Time: {movieTime} Date: {movieDate}</h1>
+        <h1 className="text-3xl font-bold mb-8 text-center text-[#ffd700]">Movie Name: {movieName} Time: {movieTime} Date: {movieDate}</h1>
 
         <div className="relative mb-8">
           <div className="absolute top-0 left-0 w-1/2 h-4 bg-[#8B0000] rounded-br-full"></div>
@@ -134,7 +136,7 @@ function Demo() {
           <Button
             size="lg"
             disabled={selectedSeatsCount === 0}
-            className="bg-[#ffd700] text-black hover:bg-[#ffed4a] disabled:bg-gray-500 disabled:text-gray-300"
+            className="bg-[#ffd700] text-black hover:bg-[#ffed4a] disabled:bg-[#dc3c4a] disabled:text-gray-300"
             onClick={() => {
               router.push(`/bookings?movieid=${movieid}&&seats=${encodeURIComponent(JSON.stringify(selectedSeats))}`);
             }}

@@ -47,13 +47,13 @@
 //     </div>
 //   )
 // }
-import { ResponsiveLoginPage } from '@/components/responsive-login-page'
+import SignInPage from '@/components/responsive-login-page'
 import React from 'react'
 
 const SignIn = () => {
   return (
     <div>
-      <ResponsiveLoginPage/>
+      <SignInPage/>
     </div>
   )
 }
