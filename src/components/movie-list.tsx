@@ -61,7 +61,8 @@ export function MovieListComponent() {
     }
     return '/placeholder.svg';  // Fallback if no image is present
   };
-
+ 
+  
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold mb-6">Movie List</h1>
