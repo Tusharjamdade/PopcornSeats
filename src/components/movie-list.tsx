@@ -23,6 +23,12 @@ interface Movie {
   };
 }
 
+// Define the type for the image to be used in the getImageSrc function
+interface ImageBuffer {
+  type: string;
+  data: Buffer;
+}
+
 export function MovieListComponent() {
   const [movies, setMovies] = useState<Movie[]>([]);  // Apply Movie[] type
   const [filter, setFilter] = useState('All');
@@ -53,7 +59,7 @@ export function MovieListComponent() {
     );
   }, [filter, searchQuery, movies]);
 
-  const getImageSrc = (image:any) => {
+  const getImageSrc = (image?: ImageBuffer) => { // Use ImageBuffer type
     if (image && image.type === 'Buffer' && image.data) {
       // Convert buffer to base64
       const base64String = Buffer.from(image.data).toString('base64');
@@ -61,8 +67,7 @@ export function MovieListComponent() {
     }
     return '/placeholder.svg';  // Fallback if no image is present
   };
- 
-  
+
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold mb-6">Movie List</h1>
@@ -102,7 +107,7 @@ export function MovieListComponent() {
                     <div className="flex flex-col sm:flex-row">
                       <div className="sm:w-1/3 mb-4 sm:mb-0 sm:pr-4">
                         <Image
-                          src={getImageSrc(movie.image)}
+                          src={getImageSrc(movie.image)} // Pass the image object here
                           alt={movie.title}
                           width={300}
                           height={200}
