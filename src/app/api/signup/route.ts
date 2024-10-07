@@ -34,10 +34,11 @@ export async function POST(req: NextRequest) {
       { message: "User created successfully", user: newUser },
       { status: 201 }
     );
-  } catch (error) {
+  } catch (error:unknown) {
     // Handle any errors that occur during the creation process
+    console.log(error)
     return NextResponse.json(
-      { error: "Something went wrong", details: error.message },
+      { error: "Something went wrong" },
       { status: 500 }
     );
   }

@@ -8,8 +8,23 @@ import { Input } from '@/components/ui/input';
 import Image from 'next/image';
 import Link from 'next/link';
 
+// Define the Movie type/interface
+interface Movie {
+  id: number;
+  title: string;
+  description: string;
+  date: string;
+  time: string;
+  director: string;
+  type?: string;  // Category or type of the movie
+  image?: {
+    type: string;
+    data: Buffer;
+  };
+}
+
 export function MovieListComponent() {
-  const [movies, setMovies] = useState([]);
+  const [movies, setMovies] = useState<Movie[]>([]);  // Apply Movie[] type
   const [filter, setFilter] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -28,7 +43,7 @@ export function MovieListComponent() {
   }, []);
 
   const categories = useMemo(() => {
-    return ['All', ...new Set(movies.map(movie => movie.type || "Unknown"))];
+    return ['All', ...Array.from(new Set(movies.map(movie => movie.type || "Unknown")))];
   }, [movies]);
 
   const filteredMovies = useMemo(() => {
@@ -38,7 +53,7 @@ export function MovieListComponent() {
     );
   }, [filter, searchQuery, movies]);
 
-  const getImageSrc = (image) => {
+  const getImageSrc = (image:any) => {
     if (image && image.type === 'Buffer' && image.data) {
       // Convert buffer to base64
       const base64String = Buffer.from(image.data).toString('base64');
@@ -81,31 +96,31 @@ export function MovieListComponent() {
           <div className="space-y-6">
             {filteredMovies.map(movie => (
               <Link key={movie.id} href={`http://localhost:3000/movie?movieid=${movie.id}&&name=${movie.title}&&time=${movie.time}&&date=${movie.date}`}>
-              <Card key={movie.id}>
-                <CardContent className="p-4">
-                  <div className="flex flex-col sm:flex-row">
-                    <div className="sm:w-1/3 mb-4 sm:mb-0 sm:pr-4">
-                      <Image
-                        src={getImageSrc(movie.image)}
-                        alt={movie.title}
-                        width={300}
-                        height={200}
-                        className="w-full h-48 object-cover rounded"
-                      />
+                <Card key={movie.id}>
+                  <CardContent className="p-4">
+                    <div className="flex flex-col sm:flex-row">
+                      <div className="sm:w-1/3 mb-4 sm:mb-0 sm:pr-4">
+                        <Image
+                          src={getImageSrc(movie.image)}
+                          alt={movie.title}
+                          width={300}
+                          height={200}
+                          className="w-full h-48 object-cover rounded"
+                        />
+                      </div>
+                      <div className="sm:w-2/3">
+                        <h2 className="text-xl font-semibold mb-2">{movie.title}</h2>
+                        <p className="text-sm text-gray-600 mb-1">Date: {movie.date}</p>
+                        <p className="text-sm text-gray-600 mb-1">Time: {movie.time}</p>
+                        <p className="text-sm text-gray-600 mb-2">Director: {movie.director}</p>
+                        <p className="text-sm text-gray-700 mb-2">{movie.description}</p>
+                        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700">
+                          {movie.type || 'Unknown'} {/* Display category or fallback to 'Unknown' */}
+                        </span>
+                      </div>
                     </div>
-                    <div className="sm:w-2/3">
-                      <h2 className="text-xl font-semibold mb-2">{movie.title}</h2>
-                      <p className="text-sm text-gray-600 mb-1">Date: {movie.date}</p>
-                      <p className="text-sm text-gray-600 mb-1">Time: {movie.time}</p>
-                      <p className="text-sm text-gray-600 mb-2">Director: {movie.director}</p>
-                      <p className="text-sm text-gray-700 mb-2">{movie.description}</p>
-                      <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700">
-                        {movie.type || 'Unknown'} {/* Display category or fallback to 'Unknown' */}
-                      </span>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+                  </CardContent>
+                </Card>
               </Link>
             ))}
           </div>
