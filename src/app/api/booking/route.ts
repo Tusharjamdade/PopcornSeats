@@ -35,6 +35,7 @@ export async function POST(req: NextRequest) {
             return resp; // Return the response for each created seat
         }));
 
+        
         return NextResponse.json({
             msg: "All bookings created successfully.",
             bookings: results // Return the results of created bookings
