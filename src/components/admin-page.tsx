@@ -62,7 +62,7 @@ export function AdminPageComponent() {
     }
 
     try {
-      const response = await axios.post("http://localhost:3000/api/movies", formData, {
+      const response = await axios.post(`${process.env.BACKEND_URL}/api/movies`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

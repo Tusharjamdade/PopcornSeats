@@ -42,7 +42,7 @@ function Demo() {
     const fetchBookedSeats = async () => {
       if (!movieid) return; // Ensure movieid is present
       try {
-        const response = await axios.post<{ seats: BookedSeat[] }>(`http://localhost:3000/api/seats`, { movieid });
+        const response = await axios.post<{ seats: BookedSeat[] }>(`${process.env.BACKEND_URL}/api/seats`, { movieid });
         const bookedSeatsData = response.data.seats; 
 
         // Update the seats state to reflect booked status
