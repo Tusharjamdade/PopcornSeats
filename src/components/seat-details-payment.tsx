@@ -77,7 +77,7 @@ function Demo() {
     }));
 
     try {
-      const response = await axios.post(`${process.env.BACKEND_URL}/api/booking`, bookings);
+      const response = await axios.post(`http://popcornseats.vercel.app/api/booking`, bookings);
       console.log('Booking response:', response.data);
       // Redirect to homepage with success message
       router.push(`/`);

@@ -29,7 +29,7 @@ export default function SignUp() {
     const data = { email, password, role }
 
     try {
-      const response = await axios.post(`${process.env.BACKEND_URL}/api/signup`, data)
+      const response = await axios.post(`http://popcornseats.vercel.app/api/signup`, data)
       if(response){
         router.push("/signin")
       }
