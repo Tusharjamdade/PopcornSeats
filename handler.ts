@@ -1,13 +1,10 @@
-
 import CredentialsProvider from "next-auth/providers/credentials";
-import { prisma } from "./client";
-const ADMIN_CODE = "786123";
+import { prisma } from "./client"; // Adjust your path to Prisma client
 import { NextAuthOptions } from "next-auth";
-import { JWT } from "next-auth/jwt";  // Import the JWT type
-// import User  from "./next-auth";     // Import the User type
-// import { NextAuthOptions } from "next-auth";
-// import { JWT } from "next-auth/jwt";
-import { User } from "next-auth";  // After extending, this includes the role field
+import { JWT } from "next-auth/jwt";
+import { User } from "next-auth";  // Extended User model with role
+
+const ADMIN_CODE = "786123";
 
 export const NEXT_AUTH_HANDLER: NextAuthOptions = {
   providers: [
@@ -36,26 +33,26 @@ export const NEXT_AUTH_HANDLER: NextAuthOptions = {
         return {
           id: user.id.toString(),
           email: user.email,
-          role: user.role,  // role is now part of User
+          role: user.role,  // User role
         };
       },
     }),
   ],
   pages: {
-    signIn: "/signin",
+    signIn: "/signin",  // Custom sign-in page path
   },
   session: {
     strategy: "jwt",
-    maxAge: 30 * 24 * 60 * 60,
-    updateAge: 24 * 60 * 60,
+    maxAge: 30 * 24 * 60 * 60,  // 30 days
+    updateAge: 24 * 60 * 60,    // Update after 1 day
   },
   jwt: {
     maxAge: 30 * 24 * 60 * 60,
   },
   callbacks: {
-    async jwt({ token, user }: { token: JWT; user?: User }) {  // user now has role
+    async jwt({ token, user }: { token: JWT; user?: User }) {
       if (user) {
-        token.role = user.role;  // No more type error
+        token.role = user.role;  // Set role in token
         token.email = user.email;
       }
       return token;
@@ -63,7 +60,7 @@ export const NEXT_AUTH_HANDLER: NextAuthOptions = {
     async session({ session, token }: { session: any; token: JWT }) {
       if (session.user) {
         session.user.email = token.email;
-        session.user.role = token.role;  // No more type error
+        session.user.role = token.role;  // Set role in session
       }
       return session;
     },

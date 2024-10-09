@@ -42,3 +42,11 @@ model User{
   password String
   role String @default("user")
 }
+
+model Users{
+  id    Int @id @default(autoincrement())
+  name String
+  salary Int
+  mobile Int
+  address String
+}
