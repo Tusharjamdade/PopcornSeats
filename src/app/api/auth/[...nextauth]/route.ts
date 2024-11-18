@@ -1,18 +1,15 @@
-// import NextAuth from "next-auth";
-// import { NEXT_AUTH_HANDLER } from "../../../../../handler";
+// import NextAuth from "next-auth"
+// import { NEXT_AUTH_CONFIG } from "../../../../../auth"
 
+// const handler = NextAuth(NEXT_AUTH_CONFIG)
 
-// const handler = NextAuth(NEXT_AUTH_HANDLER);
+// export { handler as GET, handler as POST }
 
-
-// export const GET = handler;
-// export const POST = handler;
 
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 // import { prisma } from "../../../client"; // Adjust your path to Prisma client
 import { NextAuthOptions } from "next-auth";
-import bcrypt from "bcryptjs"; // Import bcrypt for password hashing
 import { JWT } from "next-auth/jwt";
 import { User } from "next-auth"; // Extended User model with role
 import { prisma } from "../../../../../client";
@@ -41,10 +38,10 @@ export const NEXT_AUTH_HANDLER: NextAuthOptions = {
           throw new Error("Invalid admin code.");
         }
 
-        const isPasswordValid = await bcrypt.compare(credentials.password, user.password); // Use bcrypt to compare passwords
-        if (!isPasswordValid) {
-          throw new Error("Incorrect password.");
-        }
+        // const isPasswordValid = await bcrypt.compare(credentials.password, user.password); // Use bcrypt to compare passwords
+        // if (!isPasswordValid) {
+        //   throw new Error("Incorrect password.");
+        // }
 
         return {
           id: user.id.toString(),

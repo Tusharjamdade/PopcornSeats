@@ -11,6 +11,7 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_DATABASE_URL")
 }
 
 model Movie{
@@ -43,10 +44,3 @@ model User{
   role String @default("user")
 }
 
-model Users{
-  id    Int @id @default(autoincrement())
-  name String
-  salary Int
-  mobile Int
-  address String
-}

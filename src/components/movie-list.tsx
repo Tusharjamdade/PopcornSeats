@@ -38,7 +38,7 @@ export function MovieListComponent() {
     // Fetch movies from the backend using Axios
     const fetchMovies = async () => {
       try {
-        const response = await axios.get(`http://popcornseats.vercel.app/api/movies`);
+        const response = await axios.get(`http://127.0.0.1:8787/api/movies`);
         setMovies(response.data.data);  // Assuming the data is in response.data.data
       } catch (error) {
         console.error('Error fetching movies:', error);
@@ -101,7 +101,7 @@ export function MovieListComponent() {
 
           <div className="space-y-6">
             {filteredMovies.map(movie => (
-              <Link key={movie.id} href={`http://popcornseats.vercel.app/movie?movieid=${movie.id}&&name=${movie.title}&&time=${movie.time}&&date=${movie.date}`}>
+              <Link key={movie.id} href={`http://localhost:3000//movie?movieid=${movie.id}&&name=${movie.title}&&time=${movie.time}&&date=${movie.date}`}>
                 <Card key={movie.id}>
                   <CardContent className="p-4">
                     <div className="flex flex-col sm:flex-row">

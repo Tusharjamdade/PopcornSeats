@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 export default function Home() {
   const router = useRouter()
   const {  status } = useSession()
+  console.log(status)
   if(status == "unauthenticated"){
     router.push("/app")
   }
