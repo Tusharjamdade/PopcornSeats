@@ -42,8 +42,13 @@ export default function SignInPage() {
       <div className="flex items-center justify-center w-full lg:w-1/2 p-8">
         <Card className="w-full max-w-md">
           <CardHeader>
-            <CardTitle>Sign In</CardTitle>
+          <div className="flex justify-center items-center mb-1">
+            <CardTitle >Sign In</CardTitle>
+            </div>
+            <div className="flex justify-center items-center">
             <CardDescription>Enter your credentials to access your account</CardDescription>
+            </div>
+            
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSignIn} className="space-y-4">
@@ -102,7 +107,7 @@ export default function SignInPage() {
           </CardContent>
         </Card>
       </div>
-      <div className="hidden lg:flex w-1/2 bg-cover bg-center items-center justify-center p-8" style={{ backgroundImage: "url('/placeholder.svg?height=1080&width=1920')" }}>
+      <div className="hidden lg:flex w-1/2 bg-cover bg-center items-center justify-center p-8 " style={{ backgroundImage: "url('/img.jpg')",color:"white" }}>
         <div className="bg-white bg-opacity-80 p-8 rounded-lg shadow-lg max-w-lg">
           <h2 className="text-2xl font-bold mb-4">Welcome Back!</h2>
           <p className="text-gray-700">Log in to access your account and start managing your tasks effortlessly.</p>

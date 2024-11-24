@@ -50,8 +50,12 @@ export default function SignUp() {
       <div className="flex items-center justify-center w-full lg:w-1/2 p-8">
         <Card className="w-full max-w-md">
           <CardHeader>
-            <CardTitle>Sign Up</CardTitle>
-            <CardDescription>Enter your credentials to access your account</CardDescription>
+            <div className="flex justify-center items-center mb-1">
+            <CardTitle >Sign Up</CardTitle>
+            </div>
+            <div className="flex justify-center items-center">
+            <CardDescription>Enter your credentials to Sign Up</CardDescription>
+            </div>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSignIn} className="space-y-4">
@@ -109,7 +113,7 @@ export default function SignUp() {
           </CardContent>
         </Card>
       </div>
-      <div className="hidden lg:flex w-1/2 bg-cover bg-center items-center justify-center p-8" style={{ backgroundImage: "url('/placeholder.svg?height=1080&width=1920')" }}>
+      <div className="hidden lg:flex w-1/2 bg-cover bg-center items-center justify-center p-8" style={{backgroundImage: "url('/img.jpg')",color:"white"}}>
         <div className="bg-white bg-opacity-80 p-8 rounded-lg shadow-lg max-w-lg">
           <h2 className="text-3xl font-bold mb-4 text-gray-800">Welcome Back!</h2>
           <p className="text-xl text-gray-700">
