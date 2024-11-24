@@ -38,7 +38,7 @@ export function MovieListComponent() {
     // Fetch movies from the backend using Axios
     const fetchMovies = async () => {
       try {
-        const response = await axios.get(`http://127.0.0.1:8787/api/movies`);
+        const response = await axios.get(`https://popcornseat-backend.tusharnjamdade.workers.dev/api/movies`);
         setMovies(response.data.data);  // Assuming the data is in response.data.data
       } catch (error) {
         console.error('Error fetching movies:', error);

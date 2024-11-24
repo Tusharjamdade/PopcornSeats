@@ -388,7 +388,7 @@ export function AdminPageComponent() {
 
     const fetchUsers = async () => {
       try {
-        const response = await fetch("http://127.0.0.1:8787/api/users");
+        const response = await fetch("https://popcornseat-backend.tusharnjamdade.workers.dev/api/users");
         if (!response.ok) {
           throw new Error("Failed to fetch users");
         }
@@ -413,7 +413,7 @@ export function AdminPageComponent() {
 
     const fetchBookings = async () => {
       try {
-        const response = await fetch("http://127.0.0.1:8787/api/getmovies");
+        const response = await fetch("https://popcornseat-backend.tusharnjamdade.workers.dev/api/getmovies");
         if (!response.ok) {
           throw new Error("Failed to fetch bookings");
         }
@@ -464,7 +464,7 @@ export function AdminPageComponent() {
     }
 
     try {
-      const response = await axios.post(`http://127.0.0.1:8787/api/movies`, formData, {
+      const response = await axios.post(`https://popcornseat-backend.tusharnjamdade.workers.dev/api/movies`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

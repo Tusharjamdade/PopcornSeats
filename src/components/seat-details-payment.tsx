@@ -71,7 +71,7 @@ function Demo() {
     }));
 
     try {
-      const response = await axios.post(`http://127.0.0.1:8787/api/bookings`, bookings);
+      const response = await axios.post(`https://popcornseat-backend.tusharnjamdade.workers.dev/api/bookings`, bookings);
       console.log('Booking response:', response.data);
       // Redirect to homepage with success message
       router.push(`/`);

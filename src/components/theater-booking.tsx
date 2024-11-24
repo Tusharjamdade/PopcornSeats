@@ -64,7 +64,7 @@ function Demo() {
 
       try {
         const response = await axios.post<APIResponse>(
-          "http://127.0.0.1:8787/api/seats",
+          "https://popcornseat-backend.tusharnjamdade.workers.dev/api/seats",
           { movieid }
         );
         const bookedSeats = response.data.movie.seats;

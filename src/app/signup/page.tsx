@@ -29,7 +29,7 @@ export default function SignUp() {
     const data = { email, password, role }
 
     try {
-      const response = await axios.post(` http://127.0.0.1:8787/api/signup`, data)
+      const response = await axios.post(`https://popcornseat-backend.tusharnjamdade.workers.dev/api/signup`, data)
       if(response){
         router.push("/signin")
       }
