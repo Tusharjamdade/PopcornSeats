@@ -101,7 +101,7 @@ export function MovieListComponent() {
 
           <div className="space-y-6">
             {filteredMovies.map(movie => (
-              <Link key={movie.id} href={`http://localhost:3000//movie?movieid=${movie.id}&&name=${movie.title}&&time=${movie.time}&&date=${movie.date}`}>
+              <Link key={movie.id} href={`https://popcornseat-backend.tusharnjamdade.workers.dev/movie?movieid=${movie.id}&&name=${movie.title}&&time=${movie.time}&&date=${movie.date}`}>
                 <Card key={movie.id}>
                   <CardContent className="p-4">
                     <div className="flex flex-col sm:flex-row">
