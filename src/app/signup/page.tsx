@@ -50,7 +50,7 @@ export default function SignUp() {
       <div className="flex items-center justify-center w-full lg:w-1/2 p-8">
         <Card className="w-full max-w-md">
           <CardHeader>
-            <CardTitle>Sign In</CardTitle>
+            <CardTitle>Sign Up</CardTitle>
             <CardDescription>Enter your credentials to access your account</CardDescription>
           </CardHeader>
           <CardContent>

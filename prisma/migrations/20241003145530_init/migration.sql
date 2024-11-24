@@ -1,4 +1,4 @@
--- CreateTable
+
 CREATE TABLE "Movie" (
     "id" SERIAL NOT NULL,
     "title" TEXT NOT NULL,

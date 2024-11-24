@@ -11,14 +11,7 @@ export default function Home() {
   }
   return (
     <div>
-      {/* <ModeToggle/> */}
-      {/* <HomePage/> */}
-      {/* {session?.user?.email}
-      {session?.user?.role} */}
       <MovieListComponent/>
-      {/* <TheaterBooking/> */}
-      
-      {/* <SeatDetailsPayment/> */}
     </div>
   );
 }

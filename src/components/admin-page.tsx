@@ -367,11 +367,24 @@ import {
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Film, Users, Ticket } from "lucide-react";
+interface User {
+  id: string; // Adjust the type as needed
+  email: string;
+  password: string;
+  role: string;
+}
+interface Booking {
+  id: string; // Adjust the type as needed
+  title: string;
+  director: string;
+  type: string;
+  description: string;
+}
 
 export function AdminPageComponent() {
   // Custom hook to fetch users
   const useUsers = () => {
-    const [users, setUsers] = useState([]);
+    const [users, setUsers] = useState<User[]>([]);
 
     const fetchUsers = async () => {
       try {
@@ -379,7 +392,7 @@ export function AdminPageComponent() {
         if (!response.ok) {
           throw new Error("Failed to fetch users");
         }
-        const data = await response.json();
+        const data: User[] = await response.json();
         setUsers(data);
       } catch (error) {
         console.error("Error fetching users:", error);
@@ -395,7 +408,7 @@ export function AdminPageComponent() {
 
   // Custom hook to fetch bookings
   const useBookings = () => {
-    const [bookings, setBookings] = useState([]); // Initialize as array
+    const [bookings, setBookings] = useState<Booking[]>([]); // Initialize as array
     const [loading, setLoading] = useState(true); // Loading state
 
     const fetchBookings = async () => {
@@ -404,8 +417,8 @@ export function AdminPageComponent() {
         if (!response.ok) {
           throw new Error("Failed to fetch bookings");
         }
-        const data = await response.json();
-        setBookings(data.data || []); // Extract the 'data' array from the response
+        const data: Booking[] = (await response.json()).data || [];
+      setBookings(data);
       } catch (error) {
         console.error("Error fetching bookings:", error);
       } finally {
@@ -630,7 +643,7 @@ export function AdminPageComponent() {
                   </TableHeader>
                   <TableBody>
                     {users.map((user) => (
-                      <TableRow key={user.id}>
+                      <TableRow key={user.email}>
                         <TableCell>{user.id}</TableCell>
                         <TableCell>{user.email}</TableCell>
                         <TableCell>{user.password}</TableCell>
