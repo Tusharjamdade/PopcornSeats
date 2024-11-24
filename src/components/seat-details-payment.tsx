@@ -145,6 +145,7 @@ function Demo() {
                   <Label htmlFor={`contactNumber-${seat.id}`}>Contact Number</Label>
                   <Input
                     id={`contactNumber-${seat.id}`}
+                    type='number'
                     value={seatDetails[index]?.contactNumber || ''}
                     onChange={(e) => handleInputChange(index, 'contactNumber', e.target.value)}
                     required
